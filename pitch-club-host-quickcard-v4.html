@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch Club Host Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0d0d0d;
+  --white: #ffffff;
+  --amber: #c8900a;
+  --rust:  #c44b2b;
+  --dim:   rgba(0,0,0,0.45);
+  --rule:  rgba(0,0,0,0.10);
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  padding: 40px 28px 64px;
+  min-height: 100vh;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  border-bottom: 2px solid var(--black);
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(56px, 10vw, 96px);
+  letter-spacing: 0.03em;
+  line-height: 0.9;
+  color: var(--black);
+}
+
+.page-meta {
+  text-align: right;
+}
+
+.page-rule {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1.3;
+  max-width: 220px;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: var(--dim);
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+}
+
+/* ── TIMING BAR ── */
+.timing-bar {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 1.5px solid rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+.t-cell {
+  padding: 16px 10px;
+  text-align: center;
+  border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+.t-cell:last-child { border-right: none; }
+.t-cell:first-child { background: var(--black); }
+.t-cell:first-child .t-num { color: var(--white); }
+.t-cell:first-child .t-label { color: rgba(255,255,255,0.6); }
+
+.t-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--black);
+  display: block;
+}
+
+.t-label {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+  max-width: 760px;
+  margin: 0 auto 12px;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0,0,0,0.12);
+}
+
+/* ── STEP BLOCK ── */
+.steps {
+  max-width: 760px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.step {
+  background: rgba(0,0,0,0.03);
+  border-left: 4px solid rgba(0,0,0,0.12);
+  padding: 24px 28px 22px;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: start;
+  animation: appear 0.4s ease both;
+}
+
+.step.amber { border-left-color: var(--amber); background: rgba(200,144,10,0.05); }
+.step.rust  { border-left-color: var(--rust);  background: rgba(196,75,43,0.04); }
+.step.white { border-left-color: var(--black); background: rgba(0,0,0,0.03); }
+
+/* The silence step — inverted for emphasis */
+.step.inverted {
+  background: var(--black);
+  border-left-color: var(--amber);
+}
+
+.step.inverted .step-num     { color: var(--white); opacity: 0.1; }
+.step.inverted .step-label   { color: var(--white); opacity: 0.4; }
+.step.inverted .step-title   { color: var(--white); }
+.step.inverted .action-dash  { color: var(--amber); }
+.step.inverted .action-primary   { color: var(--white); }
+.step.inverted .action-secondary { color: rgba(255,255,255,0.5); }
+
+/* Step number column */
+.step-num-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--black);
+  opacity: 0.15;
+}
+
+.step.amber .step-num { color: var(--amber); opacity: 0.7; }
+.step.rust  .step-num { color: var(--rust);  opacity: 0.7; }
+.step.white .step-num { color: var(--black); opacity: 0.5; }
+
+.step-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-top: 4px;
+}
+
+/* Step content */
+.step-content {}
+
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 5vw, 44px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+
+.step.amber .step-title { color: var(--amber); }
+.step.rust  .step-title { color: var(--rust); }
+
+.step-intent {
+  font-size: 16px;
+  color: var(--dim);
+  font-style: italic;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.action {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.action-dash {
+  flex-shrink: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  color: var(--amber);
+  line-height: 1.1;
+  width: 16px;
+}
+
+.step.rust  .action-dash { color: var(--rust); }
+.step.white .action-dash { color: var(--black); }
+
+.action-body {}
+
+.action-primary {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  display: block;
+}
+
+.action-secondary {
+  font-size: 16px;
+  color: var(--dim);
+  line-height: 1.4;
+  display: block;
+  margin-top: 2px;
+}
+
+/* ── ANCHOR BLOCK ── */
+.anchor {
+  max-width: 760px;
+  margin: 0 auto;
+  border: 2px solid var(--amber);
+  padding: 28px 32px;
+  animation: appear 0.4s 0.3s ease both;
+}
+
+.anchor-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.anchor-text {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.4;
+}
+
+/* ── FOOTER ── */
+.footer {
+  max-width: 760px;
+  margin: 24px auto 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 14px;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 520px) {
+  .step { grid-template-columns: 56px 1fr; gap: 16px; }
+  .step-num { font-size: 38px; }
+  .timing-bar { grid-template-columns: repeat(3, 1fr); }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .page-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-title">Pitch<br>Club<br>Host</div>
+  <div class="page-meta">
+    <div class="page-rule">Finish on time.<br>Everything else follows.</div>
+    <div class="page-sub">DO-CONFIRM · v2 · 2025</div>
+  </div>
+</div>
+
+<!-- TIMING BAR -->
+<div class="timing-bar">
+  <div class="t-cell">
+    <span class="t-num">60</span>
+    <span class="t-label">Total min</span>
+  </div>
+  <div class="t-cell">
+    <span class="t-num">3'</span>
+    <span class="t-label">Intro</span>
+  </div>
+  <div class="t-cell">
+    <span class="t-num">3'</span>
+    <span class="t-label">Per pitch</span>
+  </div>
+  <div class="t-cell">
+    <span class="t-num">5'</span>
+    <span class="t-label">Feedback</span>
+  </div>
+  <div class="t-cell">
+    <span class="t-num">90"</span>
+    <span class="t-label">Written</span>
+  </div>
+  <div class="t-cell">
+    <span class="t-num">24h</span>
+    <span class="t-label">Winner</span>
+  </div>
+</div>
+
+<!-- BEFORE -->
+<div class="section-label">Before the session</div>
+<div class="steps">
+
+  <div class="step amber">
+    <div class="step-num-col">
+      <div class="step-num">1</div>
+      <div class="step-label">72 hrs</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">72 Hours Out</div>
+      <div class="step-intent">Build the commitment before the day.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Personal message to every pitcher and attendee</span>
+            <span class="action-secondary">Not a group message. One to one. Name to name.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Confirm running order</span>
+            <span class="action-secondary">Names and sequence locked. No surprises on the day.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step amber">
+    <div class="step-num-col">
+      <div class="step-num">2</div>
+      <div class="step-label">Morning</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">Morning Of</div>
+      <div class="step-intent">Close the last escape hatch.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Send the nudge message</span>
+            <span class="action-secondary">It's harder to disappear when someone said good morning.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Order confirmed — no last-minute changes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step amber">
+    <div class="step-num-col">
+      <div class="step-num">3</div>
+      <div class="step-label">−15 min</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">15 Minute Ritual</div>
+      <div class="step-intent">You are unreachable. The session begins now.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Stand. Close the door.</span>
+            <span class="action-secondary">Tell everyone in the house. You cannot be disturbed.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Cam · mic · slides · links · drink</span>
+            <span class="action-secondary">Everything you can control — controlled.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Timer visible on screen</span>
+            <span class="action-secondary">3 min for pitches. 5 min for feedback. Both on screen.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DURING -->
+<div class="section-label">Live session</div>
+<div class="steps">
+
+  <div class="step rust">
+    <div class="step-num-col">
+      <div class="step-num">4</div>
+      <div class="step-label">0:00</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">Room Fills</div>
+      <div class="step-intent">Set the tone before you say a word.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Paste running order into chat immediately</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Greet each arrival by name</span>
+            <span class="action-secondary">Eye contact. Move on. Don't hover.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Start on time. Do not wait for latecomers.</span>
+            <span class="action-secondary">Waiting is disrespect to everyone who showed up.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step rust">
+    <div class="step-num-col">
+      <div class="step-num">5</div>
+      <div class="step-label">3 min</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">The Intro</div>
+      <div class="step-intent">3 minutes hard. Stand up. Three beats. Stop.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Stand up</span>
+            <span class="action-secondary">Performance posture. Not email posture.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">1</div>
+          <div class="action-body">
+            <span class="action-primary">Why we're here</span>
+            <span class="action-secondary">Beijing 2019. Life skill. Still going.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">2</div>
+          <div class="action-body">
+            <span class="action-primary">How you make them feel</span>
+            <span class="action-secondary">Stakes but no risk. Smile.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">3</div>
+          <div class="action-body">
+            <span class="action-primary">The rules</span>
+            <span class="action-secondary">3 min pitch. Feedback link. Reflect. Feedback. $100 prize.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step rust">
+    <div class="step-num-col">
+      <div class="step-num">6</div>
+      <div class="step-label">3 min each</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">The Pitches</div>
+      <div class="step-intent">Clear signal in. Clean cut out. Silence in between.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">"3 – 2 – 1 – stage is yours"</span>
+            <span class="action-secondary">Same signal every time. No false starts.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Hard cut. Clap. Smile.</span>
+            <span class="action-secondary">Equal rules = generous rules. No exceptions.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Paste link. Say nothing.</span>
+            <span class="action-secondary">Silence is the tool. Let them concentrate. Do not fill it.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE SILENCE CARD — inverted for emphasis -->
+  <div class="step inverted">
+    <div class="step-num-col">
+      <div class="step-num" style="opacity:0.08;">—</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title" style="color:#ffffff;font-size:clamp(24px,4vw,36px);">Silence after the pitch is not failure.<br>Filling it is.</div>
+    </div>
+  </div>
+
+  <div class="step rust">
+    <div class="step-num-col">
+      <div class="step-num">7</div>
+      <div class="step-label">5 min</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">Feedback Round</div>
+      <div class="step-intent">Their reflection first. Then the room.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Self-reflection first</span>
+            <span class="action-secondary">One thing good. One thing to improve. Stop them if they re-pitch.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Room feedback — 3 to 4 people max</span>
+            <span class="action-secondary">Cut repeats. Redirect, don't aplogise.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">"Thank you — we need to keep moving"</span>
+            <span class="action-secondary">Big smile. Warm voice. Non-negotiable.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step white">
+    <div class="step-num-col">
+      <div class="step-num">8</div>
+      <div class="step-label">2–3 min</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">The Close</div>
+      <div class="step-intent">Land it. Don't let it dissolve.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">"What are you taking back?"</span>
+            <span class="action-secondary">One or two responses. Don't open a debate.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Paste host feedback link into chat</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash">—</div>
+          <div class="action-body">
+            <span class="action-primary">Close. On time. Done.</span>
+            <span class="action-secondary">Give the next session date. Then stop.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- AFTER -->
+<div class="section-label">After the session</div>
+<div class="steps">
+
+  <div class="step" style="border-left-color:rgba(255,255,255,0.3);">
+    <div class="step-num-col">
+      <div class="step-num">9</div>
+      <div class="step-label">24–48 hrs</div>
+    </div>
+    <div class="step-content">
+      <div class="step-title">Post-Session</div>
+      <div class="step-intent">The session isn't over when you close the call.</div>
+      <div class="actions">
+        <div class="action">
+          <div class="action-dash" style="color:var(--dim);">—</div>
+          <div class="action-body">
+            <span class="action-primary">Announce the winner</span>
+            <span class="action-secondary">Yodo1 All In chat. Within 24 hours. One sentence why.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash" style="color:var(--dim);">—</div>
+          <div class="action-body">
+            <span class="action-primary">Host debrief — 30 minutes</span>
+            <span class="action-secondary">What you felt. What was seen. One thing to commit to.</span>
+          </div>
+        </div>
+        <div class="action">
+          <div class="action-dash" style="color:var(--dim);">—</div>
+          <div class="action-body">
+            <span class="action-primary">Transfer the skill</span>
+            <span class="action-secondary">Sales call. Team meeting. Daily huddle. Where does it go next?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ANCHOR -->
+<div class="anchor">
+  <div class="anchor-label">When defence creeps in — say this</div>
+  <div class="anchor-text">"I'm not here to critique — I'm here to give you back what the room saw, so you can decide what to do with it."</div>
+</div>
+
+<div class="footer">
+  <span>Pitch Club · Host Quick Card v3 · 2025</span>
+  <span>Wiki: Hosting Pitch Club Playbook · Notion</span>
+</div>
+
+</body>
+</html>
